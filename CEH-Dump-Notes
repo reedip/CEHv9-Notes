@@ -1,0 +1,592 @@
+
+
+Laws affecting CEH
+Computer Fraud and Abuse Act : 1984 — Limited to US ( UnAuthorized Access/ Exceeding Access )
+National Info Infra Protection Act : ( Added over CFAA  + National Infra )
+Computer Crime Law (Germany )
+
+
+Methodology: Gives a framework/steps/Order to get results instead of being shotgun , method to investgiate how to move forward to EH
+( Different steps which one would take to achieve the different goals set by the target )
+
+OSSTMM : Open Source Security Testing Methodology Manual:
+- a) Information Security
+    - Competitive Intelligence review
+    - Privacy Review
+    - Document update( any and all document for the target/client for any thing )
+- b) Process Security
+    - Risk Assessment Values
+        - Request Testing
+        - Guided Suggestion Testing
+        - Trusted Person Testing
+- c) IT security
+- d) Wirless Security
+- e) Communication Security
+- f) Physical Security OISSG: Open Information System Security Group
+- Pen Testing Methodology
+
+
+Ethical Hacking: Type of Attacks
+- Defacing
+- Buffer Overflow: Accessing Memory outside the actually allocated memory. Buffer Overflow can cause failures because if we end up writing on the complete buffer, we can overwrite the return address of the function which called the buffer, and therefore can insert any action/pointer which can cause damage, like adding an executable to open a command shell /exploit
+- Format String Attacks: Can occur before Buffer Overflow. Depends a lot of C and other languages which depend on format string to differentiate between I/O data formats ( %d, %s etc)  The point here is that if the developer leaves out putting format string, then the attacker can provide the format string ( HOW??? ) , but if they are able to , you can use %d on a string or %l on a float and see what else lies beyond the variable address Stack can also be corrupted by passing data into the stack using the FS attack
+- DoS/DDoS: 
+    - DoS -> SYN Flood, PING Flood, SMURF attack( ICMP echo request/response using broadcast addresses: NOT possible any much more now a days. Fraggle Attack is same but with TCP/UDP  ), Malformed packet
+    - DDoS -> Botnet usage to Overwhelm use of resources. A large number of systems attack the system in DDoS while a Single system can perform DoS.
+    - DDoS occasionally requires a CnC network, where you have number of bots and a set of control servers. You instruct the server to perform some action and it notifies the zombie bots to perform the same.
+    - DOS can have multiple attacks included together
+- OOB attack ( Out Of Band )
+        - Provides an attacker with an alternative way to confirm and exploit a vulnerability which is otherwise “blind”. In a blind vulnerability, as an attacker you do not get the output of the vulnerability in the direct response to the vulnerable request. The OOB techniques often require a vulnerable entity to generate an outbound TCP/UDP/ICMP request and that will then allow an attacker to exfiltrate data. The success of an OOB attack is based on the egress firewall rules 
+
+
+Pen Test ( Generally +ve in nature, to find risks and weaknesses)
+- Can we break into a server/net/app/system
+- Can include Social Engg
+- Find issues and mention the recommended solutions
+- Make sure about the limit of the pen test( areas which should not be accessed by an “ Ethical “ hacker )
+
+Security Assessment:
+- Not penetration but complete security solutions
+- Includes Policies and Regulations including technical aspects.
+- Can include architecture and design of the system
+- If penetration fails, doesn’t mean that system cannot be at risk
+
+Footprinting:
+- Getting an idea of the Scope of the target, i.e. all info of the target
+- Domain Names + Subdomains
+- Network Block ( complete IP range )
+- IP addresses for specific services ( Web Server, DB, email etc ) 
+- System Arch( Hardware info + Design/Arch of the system ) and OS + Service info
+- ACL -> Find Access Control List using Port Scan, which is possible by finding out what ports are accessible and how can they be accessed. Filtered responses also teaches us about ACL ( i.e. if a Router / Firewall is present which is blocking specific packets )
+- IDS : If there is an intrusion detection which can be find if same host accesses multiple Destination/ same destination with multiple ports
+- System Enumeration : - Usernames, Group Names, 
+- System Banners , Routing Tables, SNMP
+- DNS Hostnames and types of DNS servers ( only internal, only external , both ) 
+- Networking Protocols ( only TCP, only UDP etc ) 
+- RDP/ Remote Access/ VPN
+- Possible Connection points between DC, if they use  a ISP,  ACL on that network
+
+ - Possible Websites for Footprinting/Recon
+    - waybackmachine.archive.org
+    - netcraft.com
+    - Monster.com/LinkedIn -> Social Networking, infra identification, social engineering ( Gives system info, software info etc ) 
+    - FB, Twitter for data gathering on individuals
+    - Whois-> queries the Internet Registries for Domain Name and IP addresses ( APNIC,AFRINIC, RIPE NIC( Europe, Middle and Central Asia) , LACNIC ( Latin,Carrabean ) , ARIN ( Canada, US)  are registries ) 
+        - Whois -h whois.arin.net <FQDN> for targeted DB info ( RIR : Regional Info Registry)
+        - Whois =foo gives detailed information about hosts with foo as their string name
+        - Geektools.com provides a web interface for whois
+        - More info on whois.com
+
+- Using DNS to find info
+    - Nslookup : DNS to IP
+        - Type of DNS records:
+            - A : Translates DNS to IP
+            - PTR: IP to Hostname
+            - MX: Mail Exchanger Record ( Has preferences on the way the mail exchange : Gmail, outlook etc would be resolved )
+            - SOA : Start of Authority ( When is the DNS record created, on which server and when the record would be refreshed )
+            - NS: Points to Host’s NameServer ( local/Host DNS  )
+            - CNAME : Aliases to a Hostname ( info also present in SOA)
+            - SRV: Service records
+            - RP: Responsible Person  
+            - HINFO: Host Info, includes CPU TYPE and OS
+            - TXT: Text Records
+        - Using the above DNS record types on nslookup, attacker can get a lot of leaked info. This should ideally be protected.
+    - Websites which provide similar info: robtex.com,  network-tools.com, dnsstuff.com
+    - Similar tool in Unix : 
+        - host CLI
+        - dig CLI : Similar options with nslookup ( dig soa, dig srv, dig ptr, dig a etc). But dig needs net connection. NOTE: dig can initiate or check zone transfers using command dig IP-1 IP-2 axfr
+
+- Google Hacking/ Google Dorks:
+    - Use Quotations to have the string “index of /” be used exactly : This gives a website which has this string, and this string gives directory listing
+    - Use + to make the next line/word necessary . “Index of /“ + passwd would search for directory listing which has password
+    - Use filetype: to search for specific file types. Similarly you can use ext: ( Maybe find the difference between filetype and ext ??)  <<<<———TODO
+    - Use allintitle: to search for things in the site title . Alternative is “intitle” which does a partial search. 
+    - Use site: to specify the type of site you want to search for ( site:nic.in means search only India sites )
+    - Use inurl: to search for websites which have a keyword in the URL itself ( inurl: “wwwroot/“)
+    - Use intext: to find the string in the Page. This is the by default property, IIUC
+    - USE THE “-“ SIGN to remove specific pages ( intitle:”error” -forum searches for all pages which have error in title but are not forums)
+    - You can use common knowledge, like Apache version, Old OS info and what type of strings/logs they produce. If that information is somehow uploaded and provided by a server, then those systems are susceptible. 
+    - You can also use “login=“ to search for pages which has “login=“ info.
+    - More info about google dorks can be seen from www.exploit-db.com/goog/e-dorks/
+
+# TCP
+- ARPA : Adv Research Projects Agency ( developed TCP to handle Military attacks ) 
+- IPv5 : Only for streaming and special protocol
+- 32 bit vs 128 bit
+
+# Wireshark (useful for deep pot inspection/analysis):
+- Wireshark shows all packet details from Frame Info, Ethernet Info, Network and TCP info to the actual packet Hex/Ascii dump
+- You can filter the results on Wireshark as well. It also has a method to follow a TCP stream ( i.e. all packets with Syn + Ack info synchronised )
+- Can be used to get info about VoIP , Bluetooth/WLAN traffic, signal messages for packets, multiple stats ( including endpoints ) 
+
+# OSI/TCP-IP
+- Presentation layer is JPEG, GIF etc. ICMP is between L3-L4
+- MAC = Media Access Control
+- Session = SSL / TLS
+- UDP - User DataGram Protocol, fast, no error checking/validation -> Pkt has : Src Port/Dst Port/Length/Checksum : 16 bits each[ Do Check  TCP, UDP and IP packet structure ] <<<— TODO
+- TCP Packet : 32 Bits 
+    - Src, Dst  16 each
+    - Seq No.: 32 
+    - Ack No.: 32
+    - Data Offset(4) , Reserved(6: Includes Congestion Detection and ECN-Echo) , Flags(6), Window  field size for dest(16) - Window size: Number of bytes before ACK is received (??)
+        - Flags are : URG, ACK, PSH,RST, SYN, FIN : Push data as soon as possible, Urgent means pass data immediately ! Difference is that if PSH flag is set, then Transport won’t wait for additional application data in its buffer and send the data immediately and tell dest to send it to dest app ASAP. URG means that in a data packet, some data part is prioritised, and that data is mentioned by the URG PTR.
+        - RST is sent if the Port is not open, or the SYN/ACK do not match or the client has its network broken
+    - ChkSum, URG PTR (16 each )
+    - Options + Data ( variable ) : Options has a Timestamp value 
+    - Note: Handshake has 3 pkts( Syn, Syn-Ack, Ack ) , Termination has 4 ( Fin, Ack, Fin , Ack : Time wait and close-wait state )
+- IP Pkt: 
+    - Version(4 bits),  IP HDR LEN( 4 bits), ToS( 8 bits) , Total Length( 16)
+    - ID ( 16) , Flags ( 4 bits, one is not used : Used for ECN ) , Frag Offset( 12) 
+    - TTL( 8) , Protocol (8: TCP/UDP/SNMP etc), Header ChkSum ( 16)
+    - Src Add
+    - Dest Addr
+    - Options
+    - Data
+- Attacks over TCP/IP:
+    -  SYN FLOOD: Type of DoS where we send multiple Syn but no Ack for the received SYN+ACK from server, thus utilising a lot of server resources, leading to DoS at Kernel level. server would drop TCP SYN packets due to the kernel's buffer of LISTEN sockets being full and overflowing
+    - UDP FLOOD: Multiple UDP pkts from different sources( bots) are sent to the server. The server needs to check if the service is running on the port for the UDP request. If not, then server sends an ICMP for the UDP which means that no service is running ( also a sort of reconn using UDP) . If multiple UDP pmts are sent, Server needs to check each pot and respond via ICMP and if the incoming pmts fill the state table, then the server may not be able to serve more requests, causing DDoS. Possible solution is to filter any pot which is not for the specific DNS.
+    - DNS FLOOD: Same as above examples, crash the DNS resolver application by sending multiple DNS queries to the server, so that legitimate users aren’t served . DNS Amplification attack is a different attack in which large DNS record requests are made but the return packet it targeted to the victim machine which can be the DNS resolver itself, reflecting the packet back to the DNS app server.
+    - DNS Poisoning: Redirecting the traffic to another host instead of the actual server
+    - ARP Poisoning:  ARP spoofing, ARP cache poisoning, or ARP poison routing, is a technique by which an attacker sends (spoofed) Address Resolution Protocol (ARP) messages onto a local area network, associating the MAC address of the attacker with the IP address of a host in the network. Useful for MIM, DoS and Session Hijacking.
+        - A Gratuitous ARP is an ARP Response that was not prompted by an ARP Request. The Gratuitous ARP is sent as a broadcast, as a way for a node to announce or update its IP to MAC mapping to the entire network. Useful specially if you migrate a VM. This however can be a big problem when we deal with ARP poisoning.
+        - ARP poisoning using gratuitous ARP also requires packet forwarding to avoid detection to shut down MIM.
+    - DHCP Spoofing: Using ARP Spoofing, create a Fake DHCP SERVER which intercepts the ARP requests and forwards the response to the requester before the real DHCP server does.( Its a race condition )
+    - HTTP FLOOD: Send multiple HTTP GET/POST request to block the server and thus prevent it from serving proper users. Can be solved by using IP Tracking ( IPS ) , Web Application Firewall ( WAF ) etc.
+    - ALL OF THE ABOVE ATTACKS RELY ON THE BUFFER being open for each incoming pkt
+    - RST / Half Sync/Full Sync TCP attack
+
+
+
+# DHCP:
+- DHCP Discovery -> Offer -> Request -> ACK
+
+# ARP : Map IP to MAC
+- Every computer has ARP table
+- Arp -anl ( to show arp table  with MAC address and lots of details)
+
+#Crypto:
+- Symm /  Asymm
+- Sym : Stream/Block cipher
+    - Ceasar Cypher
+    - DES : Digital Encrypt Standard : DES, 3DES : 56 bit key size . 3DES = E+D+E ( 3 different keys = 168 bits)
+        - 56 bit key, 64 bit block 
+    - AES: Advanced Encrypt Standard : Rijndael : Multiple key length: 128, 192, 256 bit keys
+        - Aescrypt  is a CLI to encrypt using Aes
+        - 128 Block size, but 128/192/256 key length
+- Asymm: Pub/Pvt key , more computation, larger key size, slower
+    - Doc signing/non-repudiation 
+    - RSA : openssl uses RSA for key management
+    - PSK: Pre-Shared Key
+    - DSA: Used for only Doc sigining and validation, RSA used for encrypt/decrypt as well. ( Digital Signature Algorithm) 
+- Hybrid: 
+    - SYm encryption on the base, and the sym key encrypted Asym’ly
+    - Pub+ Pvt are mathematically linked as prime numbers.
+    - X509 is a certificate format to digitally sign a doc and save public key info in Public key infrastructures  ( PKI)
+    - PGP ( Pretty Good Privacy ) uses X509 certificate from a Certificate Authority ( CA) where the public keys are saved.Individual users validate user info from the CA and it doesn’t provide any central DB for user validation AKA Web Of Trust Model. X509 defines the format of PKCerts ( i.e. the message digest which is signed by CA/Self Signed)  
+    - Certificates allow validation and data ( Doc /Email )  encryption. Useful in HTTPS for server authentication  using SSL certificate. ( to see a pvt key certificate : openssl x509 —text key.crt ) . OpenSSL can be used to create Self-Signed certificate. Ceritifactes use Secure Hashing also  to validate if the certificate is correct. ( Secured Hashing Also : SHA -1, SHA-2, SHA-256, SHA-384 ) .
+- Hashing:
+    - One directional mapping, cannot get actual data from the hashed value, irreversible
+    -  SSL binds a public key to an identity for non-repudiation , and thus provides Encryption and Authentication. SSL protocol provides Encryption while SSL certificate provides Auth.
+    - SSL Certificate consists of Encrypted Message digest by CA. The Message Digest encrypted by CA’s pvt key has [ CA Name, Sender Name, Sender Public Key ] in it. CA always verifies first that the user is really who they say they are. User Cert is signed by the CA Cert.
+    - Message digest helps in verification. Once you get the data from the internet( Any doc with Digital Signature: Note that the doc might not be encrypted, just have the sign ), you convert it using the Sender’s Public Key and Certificate to create the Msg Digest. The Message Digest can also be created by the Original doc if you apply a Mathematical function on it.( not much imp)
+    - SHA-1 : 160 bits, SHA-2: Family of Algos with 224, 256, 384, 512 bit 
+    - When we see Certificate Error on browsers ( and add exception ) its basically that the Browser doesn’t recognise the CA who generated the Cert.
+    - MD5 : 128 bit hash , but easily broken,.
+    - Useful for file integrity( md5sum ) , password maintenance ( one way function, so no need to keep passwd ) , Digital Sign
+        - Collision is dangerous, because , if , say we keep passwords hashed, then if we can create collision, then the hash also will give the same result for 2 values, means we can pass the wrong password and still get in.
+- SSL / TLS : Secured Socket Layer/Transport Layer Security
+    - Encrypt traffic between Server and Browser
+    - CLI: ssclscan : which scans ssl /tls version info and ciphers on a systems
+- Cryptanalysis:
+    - Freq Analysis 
+    - Bruteforce
+- DHE : Ephemeral Diffie Hellmann which is use for key exchange
+
+# Scan : ( READ MORE ) 
+- Ping Scan : Ping a set of IP addresses to see which hosts are Up
+    - nmap -sP x.x.x.x
+    - ICMP echo might be blocked, which will be a failure on Ping Scan, i.e., you may not get response from a system even if the system is up
+-  Port Scan:  Connect to all ports on a system
+    - Nmap -sT x.x.x.x -p 0-65535 / nmap -sT x.x.x.x -F ( -sT is TCP Connect) 
+    - TCP connect scan, issuing TCP SYN packets to all ports on x.x.x.x
+    - TCP connect scan completes the 3 way handshake, means its a full open scan.
+- IP Protocol Scan: nmap -sO x.x.x.x < -p port >
+    - Scan which protocols are available on the target machine .
+- Sync Scan: nmap -sS x.x.x.x ( Half - Open )
+- OS Disvcoery: nmap -O x.x.x.x
+    - OS can be discovered based on TTL of ICMP
+        - *nix = 64, Windows = 128, Solaris = 254
+- Fast Scan : nmap -F x.x.x.x
+- UDP scan : nmap -sU x.x.x.x
+- ACK Scan: nmap -sA x.x.x.x
+    - Send ACK flag
+    - It is not used to find Open ports, but closed ports and firewall status
+    - When scanning unfiltered systems, open and closed ports will both return a RST packet. Nmap labels them as unfiltered, meaning that they are reachable by the ACK packet, but whether they are open or closed is undetermined. 
+    - Ports that don't respond, or send certain ICMP error messages back (type 3, code 0, 1, 2, 3, 9, 10, or 13), are labeled filtered
+- Idle Scan: Bounce messages of an Idle/Zombie system, so that the target thinks that the zombie  system is generating the packets
+    - IP ID Header is being checked on the Zombie system to find open ports on Target system.
+    - We check if the Identification header on the IP packet is incremented. If yes, then the port is Open , if no, then the port is closed.
+    - Nmap -Pn -sI Zombie-IP Target-IP ( find out what -Pn stands for ) <<—— ToDo
+    - ZOMBIE SYSTEM must be those which do not have much activity and are idle, so that they do not show up any extraneous activity in the scan. Zombie IP is the spoofed Address
+    - If port is Open, Idle scan will get Syn+Ack. If port is closed , it might get a RST ( or nothing if its filtered ). So IP ID will be incremented for Open Ports only.
+- XMAS Scan: nmap -sX x.x.x.x
+    - Xmas scan generally uses TCP flags which are not always used, like FIN +URG+PSH , all enabled in a single packet.
+    - If the port is open, It would send back an ACK, else we will get RST ( if RST isn’t filtered )
+    - Port is Filtered if ICMP Unreachable Type 3 Code: 0/1/2/3/9/10/13 is received  ( which you may not always get ) 
+- FIN Scan : nmap -sF x.x.x.x
+    - Check if port is opened, by sending a FIN packet to the port. If port sends an RST, then the port is closed, else its assumed to be Open ( if RST isn’t filtered)
+    - Port is Filtered if ICMP Unreachable Type 3 Code: 0/1/2/3/9/10/13 is received ( which you may not always get ) 
+- Null Scan: nmap -sN x.x.x.x
+    - Send a Null packet and wait for RST ( basically NO TCP HEADER FLAG IS SET ).
+    - Port is Filtered if ICMP Unreachable Type 3 Code: 0/1/2/3/9/10/13 is received  ( which you may not always get ) 
+- SCTP Scan : nmap -sY x.x.x.x
+    - Half Open scan
+- Window Scan: nmap -sW x.x.x.x
+    - Same as ACK, but some systems put TCP Window size > 0 for Open ports in RST packets. The same is analysed here to see if the port is open, by sending the ACK flag.
+- Maimon Scan: 
+    - Send FIN+ACK
+    - Most systems send RST, but some BSD systems may not respond IF the port is open ( false +ve though, if RST is filtered )
+
+#Packet Crafting:
+- Useful to evade Firewalls/IDS or network trouble shooting
+- Since the packet is malformed, it can cause a lot of issues to IDS/IPS and applications if not protected correctly
+- Hping3 
+    - example: hping3 192.168.101.1 -U -S  -s 55355 -d 8080 ( Send a packet to 192.168.101.1:8080 from current-ip: 55355 with Urgent and Sync flag set )
+- PackETH
+    - Ethernet Packet generator
+
+#War Dailing:
+- Old routers/modems which are not using modern systems.
+
+# IDS Invasion:
+- Using Packet Crafting : 
+    - Spoofing IP address
+    - Create Bogus packets to run scans. This can be done by throttling the requests ( using nmap -T 0 ) so that packets/min are very less and don’t set off IDS. Bogus packets can be created with wrong checksum ( nmap —badsum). You can generate packets which run scan, with the decoys so that IDS isn’t able to find out the actual scan logic
+    - Add bogus / random data with the actual scan 
+    - Fragment the packets 
+    - Change TTL to low values (?)
+
+# Banner Grabbing:
+- Banner is a message shared by an application to its destination
+- Network Banner may include type of service running on a port on a server.
+- Telnet can be used for Banner Grabbing ( by default to port 23 ) , useful for TCP only, not UDP
+- Netcat / dig /openssl ( with s_connect option ) can also be used for BG to find what services they are running with what version number. ( nectar connection will give that details )
+- Openssl can be used for encrypted protocol banner grabbing, while others for unencrypted.
+
+#Nessus
+- Vulnerability Scanning of target systems
+    - Probe Open Ports
+    - Check OS, Services, Versions, 
+    - Banner Grabbing etc
+    - NOTE: if banner grabbing/version-service discovery is hidden then vulnerability may not be detectable
+
+#Enumeration: 
+- Methods to get information about a system
+    - Banner Grabbing using telnet
+    - DNS info, using dig and netcraft
+    - User information using LDAP, who etc.
+    - Connected Servers using arp -nal, SMB protocol using Windows ``net`` command
+    - Windows has certain sessions which do not require authentication, aka NULL Sessions ( You can use Windows Server Resource kit for such information ) 
+    - SNMP
+    - LDAP
+
+# SNMP: 
+- Simple Network Management protocol, Layer 7 Protocol, transmitted via UDP
+- 4 parts: 
+    - Agents: Kind of the client, but placed on the Network Elements
+    - Managers: Kind of the server, but placed on the Management Server, which queries the Agents for information. Can Get and Set config on agents
+    - Managed Devices: Devices managed by the SNMP
+    - MIB : Management Info Base:The MIBs comprises of managed objects identified by the name Object Identifier (Object ID or OID).
+		      Each Identifier is unique and denotes specific characteristics of a managed device. When queried for, the return value of each identifier could be different e.g. Text, Number, Counter, etc...
+		      There are two types of Managed Object or Object ID: Scalar and Tabular. Eg,: Scalar: Device’s vendor name, Tabular: CPU utilization of a Quad Processor, this would give me a result for each CPU   
+                       separately.Every Object ID is organized hierarchically in MIB. The MIB hierarchy can be represented in a tree structure with individual variable identifier ( dotted format ) 
+- Manage Network Devices : Gather and set configurations on the SNMP devices.
+- 3 versions: SNMPv1 had no encryption/privacy. SNMPv1 had no authentication and used Community Strings to communicate with between the Client and the Server as a password. Community String generally had 2 default values: Public ( Read Only Data ) and Private ( R/W ) . SNMPv3 has better authentication and encryption, carried over from V2 which had some basic implementations.
+- Snmpwalk CLI can be used
+- SNMP can get complete data about the system ( in eluding CPU, OS,Kernel version,Boot Image, UUID, number of users and processes etc ) 
+- Basic SNMP Commands
+* GET: The GET operation is a request sent by the manager to the managed device. It is performed to retrieve one or more values from the managed device.
+* GET NEXT: This operation is similar to the GET. The significant difference is that the GET NEXT operation retrieves the value of the next OID in the MIB tree.
+* GET BULK: The GETBULK operation is used to retrieve voluminous data from large MIB table.
+* SET: This operation is used by the managers to modify or assign the value of the Managed device.
+* TRAPS: TRAPS are initiated by the Agents, not Managers. It is a signal to the SNMP Manager by the Agent on the occurrence of an event.
+* INFORM: This command is similar to the TRAP initiated by the Agent, additionally INFORM includes confirmation from the SNMP manager on receiving the message.
+* RESPONSE: It is the command used to carry back the value(s) or signal of actions directed by the SNMP Manager.
+- SNMP traps enable an agent to notify the SNMP manager of significant events by an unsolicited SNMP message. SNMP Trap protocols include current sysUpTime value, an OID identifying the type of trap and optional variable bindings. Destination addressing for SNMP traps is determined in an application-specific manner typically through trap configuration variables in the MIB.
+
+#LDAP
+- Lightweight Directory Access Protocol
+- AD/Kerberose are implementation of LDAP
+- LDAP -> Heirarchial in Nature , Part of X.509 certificates
+- User info can be found easily from the LDAP server
+
+#Proxy Server: 
+- Bouncing the request from an alternate server
+- Proxy act in the middle so they can save the users by filtering resources, sites, and act as AntiV. 
+- SOCKS v4/v5 ? <<— TODO
+
+#TOR: 
+- Anonymyzer : The Onion Router. Uses Virtual tunnels to connect all people and thus route the packet from one person to another
+- Protects against traffic analysis since  the packet cannot be traced back to you.
+- TOR gives a separate IP address than the actual IP given by the ISP , and thus protects against back-tracking
+
+#Tunnelling: To avoid firewall, protect data, access proxies etc. 
+- Packet inside Packet ( IP in IP )
+- VPN
+- VLAN
+- Tunnel methods: 
+    - ssh admin@xyz.com -L2003:localhost:23 ( ssh via port 2003, connect this machines 2003 port to the Port number 23 on the target machine (xyz.com ))
+    - Http Tunnel : htc CLI ( HTTP Tunnel Client ) & has CLI ( HTTP Tunnel Server )
+
+#Penetration Goals:
+-  Below information is necessary 
+    -  Malicious attackers would need Persistent Access and Control : Persistent access needs a Backdoor/Tunnel so that its easier to get back in . 
+        - Can you get RDP, Shell, Desktop access?
+        - How easy and repetitive is it?
+    - Getting info about the system which includes:
+        - Username, Password
+        - Service Type, Version , OS, CPU and other information
+        - Credentials of other systems
+        - Open Ports
+        - Critical User data like CC info
+
+# Password Attacks:
+- Lophtcrack: Password Crack, Auditing and Recovery. Uses BF Attack, checking all entries in the word list.
+    - BruteForce:  Any of the above apps can be used, along with other apps
+        - Longer password make it harder to crack
+- Rainbow Tables: Precomputed Hash tables with words used as passwords. They save computation time by checking the Hash against the existing one in the password file
+- Untidy Desk Policy (passwords on documents, white boards etc)
+- Transposing and adding special characters in the word list: Using basic passwords, and replacing the characters with numbers to increase the word list ( Password ==> P@55w0rd) or adding special characters( pass@word ). Point is to increase the word list to make it easier to catch the password
+
+# Password Cracking:
+    - Run JohnTheRipper on /etc/shadow. This tries to gets Hash which matches the password in shadow. JohnTheRipper uses crypt() function of Linux
+    - Ophcrack: App which uses Rainbow tables and useful for Windows/Linux/MacOS. Useful with LiveCD
+    - Cain & Able: Application used on Windows to dump a lot of passwords. Can also sniff and grab passwords on net( Like VNC psswds, VPN psswds etc, Cisco routers, WEP passwords), arp poison etc
+
+#Password storage:
+- Windows:
+    - Stored in SAM ( Secured Acc Management ) in Hash
+    - NT4 includes encryption using SYSKEY
+    - Cain and Able can still grab the passwords from Local Storage
+    - PWDUMP7 has similar properties of grabbing the password
+- Unix: 
+    - /etc/passwd shows the Users connected to the system with additional attributes but not the passwd ( attributes like home dir, UID, GID etc ) 
+    - /etc/shadow stores the actual password. This may store the info in the Flat file which may be encrypted / hashed or plain text
+- MacOS: 
+    - Apple Open Dir ( implementation of LDAP ) is used to store Apple passwords, and /etc/shadow doesn’t exist. /etc/passwd does exist.
+
+#Priviledged escalation: 
+- Getting more privileges than already have.
+- Unix has SUDO. Microsoft/MaCOS allows automatic allocation of privileges, once the higher power user logins and authenticates the user info
+- LOCAL SYSTEM is the highest level of Privilege in Windows
+- If setuid BIT is set on a file in Linux,  then executing the program will change the user from current user to program’s user id( like Apache)  [ sudo find / -f -perm +6000 -l ] ( +6000 is setUID bit )
+
+
+# Spyware , Root kits, Keyloggers etc.
+- Get info from your system , after being installed on your system. Uses vulnerabilities from your system.
+- Adware: Only displays Ad when program is running
+- Spyware: Actually observes various patterns of your execution and gathers info from you and sends it out to others
+- Keystroke Logger: Logs keystrokes:
+    - H/W : stores all data on the hardware device, so you need to plant and retrieve it
+    - S/W: Sends data to the server where it can be worked upon
+- Rootkit: Replaces System Processes with its own versions, to hide other malware ( Malware = Malicious Software which can include trojans )
+    - Can help continued system access by evading detection / keeping the backdoor open
+- Virus: Self Replicating program which can move between systems on its own or aided by human interference
+    - Attaches itself to other programs a lot of times
+    - MAY destroy data
+- Worm is a Self Replicating STAND-ALONE program ( unlike virus which needs a host program ) 
+- Trojans : Malicious software which looks like something else , and can open backdoors
+- Root kit : Works with other malware to get escalated priviledges
+- Solutions:
+    - Anomaly Base : Of how the system behaves, and if there is any odd behaviour/deviation in it.
+    - Signature Base : Of the Virus Signature
+    - Antivirus : 
+    - Intrusion Detetction: Host/Network based IDS ( check programs on host / behaviour of network )
+        - IDS Program : SNORT - used for Network IDS
+            - SNORT has Snort rules present in it ( can work on Linux . /etc/snort/rules is the dir which saves the rules )
+            - SNORT requires knowledge of writing the packets , i.e. how a TCP/UDP packet may look like. That is the Signature ( as mentioned in Signature Base ) 
+    - Proxy can also be used to detect malware
+- Avoiding Anti Virus Detection () Breaking the above solutions )
+    - Antivirus have Signature base, so avoid the same signature of your malware. That can be done if you recompile the malware with a single character changed
+        - You can also use AES/DES/2Fish/BlowFish to encrypt the virus base.
+        - You can also use different packing schemes ( i.e. packing the malware in particular format, and then unpacking it before executing the same )
+            - Packers can be used which compress the Malware, and put it inside another program , which when executed on the target system, will uncompress the Malware and execute it.
+        - Encode the program with different algorithms ( Base 64, Base 32, etc) 
+    - Anomaly based Detection system: 
+        - Its easy to trick Anomaly based Systems, because you can just generate a lot of noise for the Anomaly System and then pass your actual hack in the noise.
+        - Anomaly based systems require a lot of work in terms of maintenance due to the high number of false positives it can generate.
+
+#Metasploit:
+- Pen Testing framework,  provides quick and easy way to create your own exploits by bundling various known exploits and payloads
+- This does not assess vulnerabilities like Nessus or Expose, but can integrate separately with it
+- Msfconsole / Metasploit UI 
+- You can run Nmap from metasploit :)
+- Metasploit has a PGSQL in its backend
+- You can import Nessus/ Nexpose reports and  check for vulnerabilities already recorded by Nessus. Metasploit helps to view it a Bit better. You can find the VULN from the report and then use that exploit
+    - Example : metasploit: `use exploit/../../../.. `
+    - Once you enabled the exploit you can use `show options` to see what args the command needs, pass them and run the exploit against a remote host
+- Metasploit can open meterpreter ( metasploit interpreter) in Windows if there is an exploit of Windows which hasn’t been patched. 
+    - Running `get system` in meterpreter can help you gain Escalated Privileges
+    - Running `hash dump` on meterpreter can give you windows passwords
+    - You can get sys info of the Windows, Webcam snaps, Snapshot of the Desktop etc. 
+
+#Auditing and Logging: 
+- Syslog, dimes and auth.log in /var/log can be interesting, similar to sshd.log
+-  Event Viewer in Windows is useful for syslog. It has application, security, Hardware Events  and several other logs
+- All logging can be used for Auditing
+
+# Malware Deployment
+- Zeus is a toolkit  and is a Malware which has a botnet associated with it.  It can create the bot with the payload you want to put in it.
+- Zeus can also pack the Malware
+- Wrapper can be used to wrap a malware inside another program, thus making it a Trojan horse.
+- Send the Malware via a hidden hyperlink ( redirection to another website)
+
+#Virus Types: 
+- Boot Sector Virus: Replaces MBR with another piece of code which deploys the virus, and then deploy the MBR.
+- Shell Virus: Wraps a shell around an executable , so that the virus code is run before the legitimate application is executed
+- Multipartite: Boot + Shell virus
+- Macros: Virus affecting Word/Excel etc
+- Polymorphic and Metamorphic Virus: can change its code/ config parameters and thus continue to change and save itself from Signature checks and thus looks different time to time.  Polymorphic does code mutation and can differ between systems. While Metamorphic can be different across files in the same system itself.
+
+#Malware Analysis: 
+- VirusTotal can be used to analyse existing files to find signatures of Viruses whose record and finding has been maintained by other Anit-Viruses.
+- Run `strings` across the file in Linux to see more information about the Executable.
+- GDB and other Debuggers, Assembler , Crash etc. can be used to analyse the Malware executables. When you don’t have the Source code of the Malware
+- Strace(Process Monitor in windows)/LSOF/LTrace can also help in understanding the system, and how the Malware is affected ting the system by List of Open Files  and Sockets. Top in Linux and Process Explorer in Windows show the same info ( about Process, threads etc ) 
+- Boot Loggers ( like Built-in in Process monitor) can help to find boot loading virus/malware by logging all info
+
+#Windows ADS: 
+- ADS = Alternate Data Stream. Every file has normally one stream which has all data packets connected to it. In ADS, multiple packets are connected to one single file and share the data packets. ADS in Windows can be treated as the Icons and other information of a file which exist somewhere in the OS, inaccessible by normal users, but read by the file for UI/UX
+- Example: `type streams.exe > garbage.txt:streams.exe` command populates the garbage.txt with streams.exe but this info is INVISIBLE to the OS. This information is hidden in the FS, and is parts of the ADS mentioned above.
+
+#Attack Counter measures:
+- IPTables: 
+    - Iptables -P ( Policy )
+    - Note: 10.0.0.0/8 and 172.160.0.0/12 are never routed as per RFC1918 , so if you get this on the internet, Drop the packet :)
+    - IPTables maintains the state of connection, so ideally you can put Incoming SSH connections as NEW/Established, and outgoing as Established
+    - You can limit the number of packets using -m limit —limit X/min —limit-burst Y . The -m tells the type of action, —limit tells number of entries per minute, with a max limit specified in —limit-burst.
+    - You can also  -j LOG the packet ( like ACCEPT, DROP, you can also LOG as an action )
+
+# Web Application Testing:
+- Burp Suite is useful for WebApp scanner
+- Spider can be used to get a lit of all the pages of a Web Application
+- Useful to find XSS, XSRF, SQLINJECT etc
+- Fuzzing Attack: Fuzzing is a testing approach that consists of feeding large amounts of random inputs to the target program in an attempt to reveal bugs
+- Add-Ons like TamperData ( on FireFox) can be used to manipulate data without running BurpSuite, on the browser
+- XSS: 
+    - Ability to have scripts execute inside the Form Fields in WebApp, to get user data, manipulate the page etc. Targeted at the browser/User
+    - Persistent XSS aka STORED XSS, which is stored and can be retrieved later on. 
+    - Non Persistent XSS( aka REFLECTED XSS) script has to be plugged into the form field every time the page is accessed.
+    - DOM-Based XSSL: DOM Based XSS (or as it is called in some texts, “type-0 XSS”) is an XSS attack wherein the attack payload is executed as a result of modifying the DOM “environment” in the victim’s browser used by the original client side script, so that the client side code runs in an “unexpected” manner. That is, the page itself (the HTTP response that is) does not change, but the client side code contained in the page executes differently due to the malicious modifications that have occurred in the DOM environment.
+    - Self XX and Mutated XSS: Self XSS is an attack based on Social Engineering( asking someone to click a link ). Mutated XSS occurs when the code written by the Attacker is SAFE but due to the Browser converting the Markup language, we end up with an XSS 
+    - While Stored and Reflected XSS are Server Side issue, DOM is primarily Client Side.
+- SQL Injection: 
+    - Targeted specifically at the WebApp and the DB.
+    - BURP SUITE can also
+- XSRF: 
+    - GET for POST : User performs a function on a Web Application without them being aware of it.Basically if you allow a GET message instead of Post, you are asking the website for some data, which you may not know of. Once downloaded, the Data can do all sort of stuff, and this information can be HIDDEN inside other HTML tags. GET requests are easy to manufacture and thus hackable as compared to POST request.
+- Session Hijacking:
+    - HTTP is a state-less protocol. Web Application need to handle states themselves, by generating session ID per user and keep track of it ( cookie )
+    - Capturing the session ID from a transmission can be used for Hijacking . Cookies are at the client side.
+- Password attack: Using Burp Suite, you can do brute force. It is ideal not to put all Password validation in JS or at DB level , but segregate it at each level. You can also run Sniffers to get password which are in Cleartext, in case. 
+    - Must keep SSL Encryption and do validation across all layers for Password protection.
+
+#WiFi:
+- 802.11 standard. Wifi is a L-2 Protocol, using different frequencies
+    - 802.11 b =-> 2.4Ghz, 11MB
+    - 802.11g -> 2.4G, 54MB
+    - 802.11a -> 5GHz,54MB
+    - 802.11ac/ad -> 5GHz ( 100MB-some GB /sec )
+- Uses SSID : Service Set ID , which is the ID of the WiFi Network
+- WEP( Wired Equivalent Privacy )/WPA2( Wifi Protected Access - 2) authentication
+    - WEP uses 10 OR 26 but HEX key for stream cipher ( RC4 ) .The Key can be shared, or an Open System.WEP can be cracked after gathering enough data.
+    - WPA uses Preshared-Key. The Key is can be any bits long ( unlike 10/26) . WPA2 can use Extensible Authentication Protocol with TLS to give encryption [ This is available in WPA2 Enterprise, not in WPA2 Personal ]
+- WiFi can be broken by sending a RST packet to one of the known hosts over Wireless by Forging the Packet and then checking for the Transmission of the Password over the Channel.
+- WiFi can be found using OS ( if SSID is broadcasted ) or by using WiFi Sniffer tools like KisMat/KisMac, WiFi Explorer /Net Stumbler etc.
+- WEP can be broken using a tool called AirCRACK
+    - You can use `airmon-ng`, which is a part of AirCRACK ,to see the different interfaces available.
+    - WiFI has 2 general modes: Promiscuous Mode and Monitor Mode. Airmon uses Monitor mode ( airman-ng start wlan0, for example ). Promiscuous is used for Packet Sniffing.monitor mode allows packets to be captured without having to associate with an access point or ad hoc network first. 
+    - You can run airman, to generate a CAPTURE file ( I.e. list of all SSIDs) and pass it to aircrack CLI.
+- Rogue Access Points 
+    - If you place an access point inside a Network, it is possible to bypass Wireless Access Policy built in the system.
+    - You can also have a Wireless Access Point with a NAME very SIMILAR to the one deployed, so that it seems to be Authentic. This can act as a Honeypot and attract more users( whose info you can hack and transmit the data to the original AP to act as a normal router). You can even do a DDoS on the actual access point to make your look more authentic.
+- Wireless Sniffer: 
+    - Wireshark can be used with a Wireless interface to sniff the data.Wireshark runs in Promiscuous mode, and there needs to be connected to the Wireless Connection. Same for tcpdump.
+    - You can also run airodump-ng ( from AirCRACK). Airodump runs on the Monitor Mode, and can get all info from the virus Wireless connections. This can give the ability to see data from L4-L2. It also gives you the data dump so you can crack the Wireless Encryption Protocols. Airodump runs across all stations, Wireshark only on the connected 1.
+    - You need to have a separate Wifi connected to connect to Promiscuous mode, as its normally not allowed in normal computers.
+- Protection:
+    - Don’t keep SSID public
+    - Maybe not keep SSID logical ( it shouldn’t state that it belongs to a specific company/user etc)
+    - Maybe change the channels 
+    - Turn WEP  or WPA2  ON. And set the keys properly
+    - Setup Access Policies ( Based on MAC  Authentication Filtering or Based on 802.11 b /g , based on the type of WiFi connection )
+
+#Evasion: 
+- Log Alteration
+- Hiding in the Noise
+- Low and Slow approach ( to overcome IDS/IPS )
+- Fragment the data
+- Sending data in Unicode to change the overall outlook.
+
+# Note:
+- Stack grows up from Higher to Lower Memory, Heap goes in the opposite direction, from Low to High. Therefore there is an overlap chance (?!?)
+- Stack has the function local variables, but dynamic variables are in the Heap.
+- Format String and Buffer overflow attack the stack. Stack Frame has Function Variables, Base Ptr, Return Ptr and Args of the function.
+    - Buffer Overflow attempts to change the Return Pointer of the Stack Frame.
+    - Segfault occurs when the Memory being accessed whose rights are not with the program to access, since its not part of the memory layout given to the program. Segfault is actually the layout where you know the return pointer has been crossed( that’s the last memory location ) m and that’s where you change the things. Once you get the idea of where the buffer overflow exists, you can try to change the return pointer. ( https://security.stackexchange.com/questions/72653/exploiting-buffer-overflow-leads-to-segfault)  Though segfault is not a garuanteed find.
+    - Format String attacks depends on C only. The %s, %d etc are the format stings, which can be manipulated to create a hack. As mentioned earlier, Format string attack requires the attacker to pass the format string. So If there is an input in C , which takes in any value and you pass a format string, and the output( printf ) doesn’t have a format string, then this issue can occur.
+    - Stack Canary :
+#OWASP: 
+1. Injection: 
+    1. SQL Injection
+    2. LDAP Injection
+    3. You can use WAF and Query Parameterization, along with earlier defined points.
+2. Broken Authentication:
+    1. Websites with broken authentication vulnerabilities are very common on the web. Broken Authentication usually refers to logic issues that occur on the application authentication’s mechanism, like bad session management prone to username enumeration.
+    2. Possible if default Username/Passwords or common/weak ones exist in the WA, if it permits Brute Force, easy password recovery , no MFA, usage of invalid/expired cookies/SIDs etc.
+3. Sensitive data exposure:
+    1. Exposing sensitive data ( Name, Password, CC, Health Insurance etc) to the public due to weak encryption or on SM.Both Stored and Transmitted data is important to be checked out here, specially due to GDPR( General Data Protection Regulation ).
+    2. To protect data in Transit, encrypt it with TLS, transmit with HSTS. To protect data in store, encrypt it with strong protocol and encryption key. Don’t enable cache. Follow PCI-DSS and AUDIT your systems.
+4. XML External Entities (XXE)
+    1. An XML External Entity attack is an attack against an application parsing XML input from an unreliable source. This attack occurs when XML input containing a reference to an external entity is processed by a weakly configured XML parser. Most parsers are vulnerable to XXE.
+    2. This happens if the XML cannot handle the content strongly, I.e. vulnerable code can be exploited in the XML Parser, or a malicious XML can be uploaded or  the XML Document can have hostile content.
+    3. XXE is mostly cracked by checking out the HTML Source code and uploading a corrupt XML in the File Upload option. File Upload where XML format is used is not only XML but DOCX, PPTX etc.
+    4. With XXE you will craft a payload that when executed, will read local files on the server, access internal networks, scan internal ports etc. 
+    5. As usual, WAF, Virtual Patching and API Gateway is useful to block any XXE
+5. Broken Access control:
+    1. Easy access by using default password usernames to DB, FTP, SSH, Admin Panel or any other application in the server.
+6. Security misconfigurations
+    1. Includes Unpaatched Flaws, Default config, unnecessary apps, service etc.
+    2. Turn off any extra configuration and keep all servers at same configuration
+    3. Use HTTP Security Headers ( HSTS, HPKP, X-Frame)
+7. Cross Site Scripting (XSS):
+    1. Inject Malicious Client Side scripts ( JS/PHP ) on the website’s page, which is used for propagation. It can help avoid Same-Origin Policy and gain Access Controls.
+    2. See WebApp Testing for more info
+    3. Use ReactJS, NodeJS, Ruby on Rails to avoid XSS. Escaping HTTP Request Data.
+8. Insecure Deserialization:
+    1. Convert the incoming Byte String to a WebApp to an Object, giving Admin privileges in the object and resending it back as Binary data to the WebApp.
+    2. Protection is NOT to accept Byte format data, and only Object data, from untrusted sources, using Digital Signatures, Enforcing ACL/Constraints, Logging/Monitoring etc.
+9. Using Components with known vulnerabilities:
+    1. Similar to Security Misconfigurations
+    2. No time to keep track of Updates
+    3. Chances of failure to upgrade Legacy software with more recent code
+    4. Dependency on Vulnerable software/libraries, which need to be updated but haven’t
+    5. Policy driven Upgrades which can take a lot of time
+    6. Solution: Use WAF, VERIFY CVEs
+10. Insufficient logging and monitoring:
+
+# Honeypots:
+- Is primarily a part of IDS ,and is used to prevent any attacks but allowing attackers to attack, ideally, an isolated system and then monitor their behaviours etc.
+    - Honeypots can be at any step: SNMP, DB, WebApp, LDAP etc.
+
+Acronyms: 
+- PCI-DSS: Payments Card Industry, Data Security Standards
+- RSA: Creator dependent
+- SOP: Same-Origin Policy :a web browser permits scripts contained in a first web page to access data in a second web page, but only if both web pages have the same origin. An origin is defined as a combination of URI scheme, host name, and port number. This policy prevents a malicious script on one page from obtaining access to sensitive data on another web page through that page's Document Object Model. This is managed by the HTTP cookies.
+
+
+References: 
+https://en.wikipedia.org/wiki/Same-origin_policy
+https://en.wikipedia.org/wiki/Cross-site_scripting#Self-XSS
+https://www.bugcrowd.com/blog/advice-from-a-bug-hunter-xxe/
+https://www.honeynet.org/papers/
