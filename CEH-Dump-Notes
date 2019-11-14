@@ -1,10 +1,7 @@
-
-
 Laws affecting CEH
 Computer Fraud and Abuse Act : 1984 — Limited to US ( UnAuthorized Access/ Exceeding Access )
 National Info Infra Protection Act : ( Added over CFAA  + National Infra )
 Computer Crime Law (Germany )
-
 
 Methodology: Gives a framework/steps/Order to get results instead of being shotgun , method to investgiate how to move forward to EH
 ( Different steps which one would take to achieve the different goals set by the target )
@@ -25,7 +22,6 @@ OSSTMM : Open Source Security Testing Methodology Manual:
 - f) Physical Security OISSG: Open Information System Security Group
 - Pen Testing Methodology
 
-
 Ethical Hacking: Type of Attacks
 - Defacing
 - Buffer Overflow: Accessing Memory outside the actually allocated memory. Buffer Overflow can cause failures because if we end up writing on the complete buffer, we can overwrite the return address of the function which called the buffer, and therefore can insert any action/pointer which can cause damage, like adding an executable to open a command shell /exploit
@@ -37,7 +33,6 @@ Ethical Hacking: Type of Attacks
     - DOS can have multiple attacks included together
 - OOB attack ( Out Of Band )
         - Provides an attacker with an alternative way to confirm and exploit a vulnerability which is otherwise “blind”. In a blind vulnerability, as an attacker you do not get the output of the vulnerability in the direct response to the vulnerable request. The OOB techniques often require a vulnerable entity to generate an outbound TCP/UDP/ICMP request and that will then allow an attacker to exfiltrate data. The success of an OOB attack is based on the egress firewall rules 
-
 
 Pen Test ( Generally +ve in nature, to find risks and weaknesses)
 - Can we break into a server/net/app/system
@@ -155,14 +150,16 @@ Footprinting:
     - ALL OF THE ABOVE ATTACKS RELY ON THE BUFFER being open for each incoming pkt
     - RST / Half Sync/Full Sync TCP attack
 
-
-
 # DHCP:
 - DHCP Discovery -> Offer -> Request -> ACK
 
 # ARP : Map IP to MAC
 - Every computer has ARP table
 - Arp -anl ( to show arp table  with MAC address and lots of details)
+
+#MAC Poisoning: 
+- Every switch has Content Addressable Memory for faster IP to MAC lookup.
+- MAC ( Media Access Control ) Flooding: Flood the Network with so many MAC packets that CAM table is overloaded and the switch becomes a HUB. Since Switch generally sends packet to a specific Switch Port, this would make it to a Hub which would broadcast the packet to all systems. Attacker can spoof ARP after this.
 
 #Crypto:
 - Symm /  Asymm
@@ -246,6 +243,9 @@ Footprinting:
 - Maimon Scan: 
     - Send FIN+ACK
     - Most systems send RST, but some BSD systems may not respond IF the port is open ( false +ve though, if RST is filtered )
+- Fragmentation Attack : 
+    - Nmap -f IP address
+- Invalid RST flag:
 
 #Packet Crafting:
 - Useful to evade Firewalls/IDS or network trouble shooting
@@ -398,13 +398,16 @@ Footprinting:
 - Trojans : Malicious software which looks like something else , and can open backdoors
 - Root kit : Works with other malware to get escalated priviledges
 - Solutions:
-    - Anomaly Base : Of how the system behaves, and if there is any odd behaviour/deviation in it.
-    - Signature Base : Of the Virus Signature
     - Antivirus : 
+    - Anomaly Base IDS : Of how the system behaves, and if there is any odd behaviour/deviation in it.
+    - Signature Base IDS: Of the Virus Signature
+    - Protocol Anamoly based IDS
     - Intrusion Detetction: Host/Network based IDS ( check programs on host / behaviour of network )
         - IDS Program : SNORT - used for Network IDS
             - SNORT has Snort rules present in it ( can work on Linux . /etc/snort/rules is the dir which saves the rules )
             - SNORT requires knowledge of writing the packets , i.e. how a TCP/UDP packet may look like. That is the Signature ( as mentioned in Signature Base ) 
+            - 3 Actions: Alert, Log, Pass: TCP, UDP, ICMP
+            - Tools: Tipping Point, Snort, Fortigate, AlientVault
     - Proxy can also be used to detect malware
 - Avoiding Anti Virus Detection () Breaking the above solutions )
     - Antivirus have Signature base, so avoid the same signature of your malware. That can be done if you recompile the malware with a single character changed
@@ -575,18 +578,78 @@ Footprinting:
     6. Solution: Use WAF, VERIFY CVEs
 10. Insufficient logging and monitoring:
 
+#IOT: Censys 
+
 # Honeypots:
 - Is primarily a part of IDS ,and is used to prevent any attacks but allowing attackers to attack, ideally, an isolated system and then monitor their behaviours etc.
     - Honeypots can be at any step: SNMP, DB, WebApp, LDAP etc.
+    - DONEST ALLOW 3 WAY HANDSHAKES!
 
 Acronyms: 
 - PCI-DSS: Payments Card Industry, Data Security Standards
 - RSA: Creator dependent
 - SOP: Same-Origin Policy :a web browser permits scripts contained in a first web page to access data in a second web page, but only if both web pages have the same origin. An origin is defined as a combination of URI scheme, host name, and port number. This policy prevents a malicious script on one page from obtaining access to sensitive data on another web page through that page's Document Object Model. This is managed by the HTTP cookies.
+#Website Cloning:
+- Use HTTrack to clone websites so that you can understand how the website works. You can use XSS/XSRF/XXE to hack it.
+- OSSIM: Opensource Security INCIDENT Event Management for logging info.
 
+Honeypot Tools:Specter, KFSensor, Honeybot
+
+#Session Splicing ( change TTL of the packet) , Fragmentation Attack ( using nmap) is useful to attack.
 
 References: 
 https://en.wikipedia.org/wiki/Same-origin_policy
 https://en.wikipedia.org/wiki/Cross-site_scripting#Self-XSS
 https://www.bugcrowd.com/blog/advice-from-a-bug-hunter-xxe/
 https://www.honeynet.org/papers/
+
+110 POP3
+111 NFS client
+115 SFTP
+123 NTP
+137 NBT nameresolution
+138 NBT datagram service
+139 NBT session service
+13 Daytime
+143 IMAP4
+161 SNMP standard
+162 SNMP trap
+1645 RADIUS auth
+201 Apple Talk
+20  FTP data
+21 FTP control
+22 SSH
+23 Telnet
+25 SMTP standard
+31337/31338 : BackOrifice
+3389 RDP
+387 AURP
+389 LDAP
+43 Whois
+443 HTTPS
+445 (1) AD
+445 (2) SMB
+465 SMTP encryption
+5060 SIP
+514 Syslog
+53 DNS
+587 SMTP submission
+636 LDAPS
+666 Doom
+67 BOOTP server
+67 DHCP server
+68 BOOTP client
+68 DHCP client
+691 MS Exch Routing
+69 TFTP
+70 Gopher
+79 Finger
+7 Echo
+80 HTTP
+873 Rsync
+88 Kerberos
+92 NPP
+989  FTPS data
+990 FTPS control
+993 IMAP4S
+995 POP3S
