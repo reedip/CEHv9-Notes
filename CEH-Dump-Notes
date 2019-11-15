@@ -123,7 +123,7 @@ Footprinting:
     - Src, Dst  16 each
     - Seq No.: 32 
     - Ack No.: 32
-    - Data Offset(4) , Reserved(6: Includes Congestion Detection and ECN-Echo) , Flags(6), Window  field size for dest(16) - Window size: Number of bytes before ACK is received (??)
+    - Data Offset(4) , Reserved(6: Includes Congestion Detection and ECN-Echo) , Flags(6), Window  field size for dest(16) - Window size: Number of bytes before ACK is received 
         - Flags are : URG, ACK, PSH,RST, SYN, FIN : Push data as soon as possible, Urgent means pass data immediately ! Difference is that if PSH flag is set, then Transport won’t wait for additional application data in its buffer and send the data immediately and tell dest to send it to dest app ASAP. URG means that in a data packet, some data part is prioritised, and that data is mentioned by the URG PTR.
         - RST is sent if the Port is not open, or the SYN/ACK do not match or the client has its network broken
     - ChkSum, URG PTR (16 each )
@@ -159,8 +159,8 @@ Footprinting:
 
 #MAC Poisoning: 
 - Every switch has Content Addressable Memory for faster IP to MAC lookup.
-- MAC ( Media Access Control ) Flooding: Flood the Network with so many MAC packets that CAM table is overloaded and the switch becomes a HUB. Since Switch generally sends packet to a specific Switch Port, this would make it to a Hub which would broadcast the packet to all systems. Attacker can spoof ARP after this.
-
+- MAC ( Media Access Control ) Flooding: Flood the Network with so many MAC packets that CAM table is overloaded and the switch becomes a HUB. Since Switch generally sends packet to a specific Switch Port, this would make it to a Hub which would broadcast the packet to all systems. Attacker can spoof ARP after this. SMURF Attack
+ 
 #Crypto:
 - Symm /  Asymm
 - Sym : Stream/Block cipher
@@ -199,7 +199,7 @@ Footprinting:
     - Bruteforce
 - DHE : Ephemeral Diffie Hellmann which is use for key exchange
 
-# Scan : ( READ MORE ) 
+# Scan :
 - Ping Scan : Ping a set of IP addresses to see which hosts are Up
     - nmap -sP x.x.x.x
     - ICMP echo might be blocked, which will be a failure on Ping Scan, i.e., you may not get response from a system even if the system is up
@@ -264,7 +264,7 @@ Footprinting:
     - Create Bogus packets to run scans. This can be done by throttling the requests ( using nmap -T 0 ) so that packets/min are very less and don’t set off IDS. Bogus packets can be created with wrong checksum ( nmap —badsum). You can generate packets which run scan, with the decoys so that IDS isn’t able to find out the actual scan logic
     - Add bogus / random data with the actual scan 
     - Fragment the packets 
-    - Change TTL to low values (?)
+    - Change TTL to low values 
 
 # Banner Grabbing:
 - Banner is a message shared by an application to its destination
